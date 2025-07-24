@@ -1,0 +1,44 @@
+[project]
+name = "google-birthday-liberator"
+version = "0.1.0"
+description = "Liberate your birthdays from Google Contacts' broken integration and create your own reliable calendar"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "black>=23.0.0",
+    "ruff>=0.1.0",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "black>=23.0.0",
+    "ruff>=0.1.0",
+]
+
+[project.scripts]
+bd-filter = "python filter_contacts.py"
+bd-calendar = "python create_birthday_calendar.py"
+bd-stats = "python -c \"import csv, os; print('📊 Contact Statistics:'); print('='*20); contacts = sum(1 for _ in open('export.csv')) - 1 if os.path.exists('export.csv') else 0; print(f'📊 Total contacts with birthdays: {contacts}'); events = open('birthdays.ics').read().count('BEGIN:VEVENT') if os.path.exists('birthdays.ics') else 0; print(f'📅 Calendar events created: {events}')\""
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+
+[tool.black]
+line-length = 88
+target-version = ["py310"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+select = ["E", "F", "W", "I", "N"]
